@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/mtanzim/unsplash-wallpapers/pkg/downloader"
 )
@@ -28,7 +29,16 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) Download(baseApi, access, destPath, collectionId string, maxPageLimit int) {
+const baseApi = "https://api.unsplash.com"
+const maxPageLimit = 10
+
+func (a *App) Download(destPath, collectionId string) string {
+
+	access := os.Getenv("ACCESS")
+	fmt.Println(destPath)
+	fmt.Println(collectionId)
+
 	downloader := downloader.NewDownloader(baseApi, access, destPath, maxPageLimit)
 	downloader.Download(collectionId)
+	return "Completed"
 }

@@ -32,6 +32,12 @@
     cursor: pointer;
 }
 
+.input-box {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+
 .input-box .btn:hover {
     background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
     color: #333333;
