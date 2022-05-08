@@ -7,14 +7,20 @@ import (
 	"github.com/mtanzim/unsplash-wallpapers/pkg/downloader"
 )
 
+type appConfig struct {
+	baseApi   string
+	accessKey string
+}
+
 // App struct
 type App struct {
-	ctx context.Context
+	ctx    context.Context
+	config appConfig
 }
 
 // NewApp creates a new App application struct
-func NewApp() *App {
-	return &App{}
+func NewApp(config appConfig) *App {
+	return &App{config: config}
 }
 
 // startup is called when the app starts. The context is saved
@@ -23,16 +29,15 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) Download(destPath, collectionId string) string {
+func (a *App) Download(destPath, collectionId string, numPages int) string {
 
-	access := a.ctx.Value(AccessCtxKey).(string)
-	baseApi := a.ctx.Value(BaseApiKey).(string)
-	maxPageLimit := a.ctx.Value(NumPagesKey).(int)
+	access := a.config.accessKey
+	baseApi := a.config.baseApi
 
 	fmt.Println(destPath)
 	fmt.Println(collectionId)
 
-	downloader := downloader.NewDownloader(baseApi, access, destPath, maxPageLimit)
+	downloader := downloader.NewDownloader(baseApi, access, destPath, numPages)
 	downloader.Download(collectionId)
 	return "Completed"
 }

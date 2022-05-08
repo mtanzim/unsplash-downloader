@@ -1,8 +1,8 @@
 package main
 
 import (
-	"context"
 	"embed"
+	"fmt"
 	"log"
 	"os"
 
@@ -32,11 +32,12 @@ func main() {
 	if access == "" {
 		log.Fatal("please provide access key in .env")
 	}
+	fmt.Println(access)
 
-	app := NewApp()
-	app.ctx = context.WithValue(context.Background(), AccessCtxKey, access)
-	app.ctx = context.WithValue(app.ctx, BaseApiKey, "https://api.unsplash.com")
-	app.ctx = context.WithValue(app.ctx, NumPagesKey, 2)
+	app := NewApp(appConfig{
+		baseApi:   "https://api.unsplash.com",
+		accessKey: access,
+	})
 
 	// Create application with options
 	err = wails.Run(&options.App{
