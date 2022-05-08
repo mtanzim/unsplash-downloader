@@ -28,8 +28,8 @@ function App() {
       setError("Collection id is required");
       return false;
     }
-    if (numPages > 10 || numPages < 1) {
-      setError("Number of pages must be between 1 and 10");
+    if (numPages > 20 || numPages < 1) {
+      setError("Number of pages must be between 1 and 20");
       return false;
     }
     return true;
@@ -68,6 +68,8 @@ function App() {
           value={numPages}
           name="input"
           type="number"
+          min="1"
+          max="20"
         />
         <label htmlFor="destPath">Download to path</label>
         <input
