@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/joho/godotenv v1.4.0
-	github.com/mtanzim/unsplash-wallpapers v0.1.4
+	github.com/mtanzim/unsplash-wallpapers v0.1.5
 	github.com/wailsapp/wails/v2 v2.0.0-beta.36
 )
 
