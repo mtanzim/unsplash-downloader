@@ -1,15 +1,57 @@
 #input {
   display: flex;
   flex-direction: column;
-  margin: auto;
+  align-items: center;
+  border: 1px gray solid;
+  margin: 16px;
+  padding: 16px;
 }
 
 #input input {
-  margin: 4px;
   width: 300px;
 }
 
 #input button {
   margin: 20px;
   width: 200px;
+}
+
+.inputfile {
+  /* visibility: hidden etc. wont work */
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.inputfile:focus + label {
+  /* keyboard navigation */
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+.inputfile + label * {
+  pointer-events: none;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  border: 1px gray solid;
+  margin: 16px;
+  padding: 16px;
+}
+
+.results {
+  margin: 16px;
+  padding: 16px;
+  width: 66%;
+  height: 200px;
+  overflow-y: auto;
+  resize: none;
+}
+
+.error {
+  color: red;
 }

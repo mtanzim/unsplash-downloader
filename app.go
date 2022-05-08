@@ -29,7 +29,7 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) Download(destPath, collectionId string, numPages int) string {
+func (a *App) Download(destPath, collectionId string, numPages int) []string {
 
 	access := a.config.accessKey
 	baseApi := a.config.baseApi
@@ -37,7 +37,7 @@ func (a *App) Download(destPath, collectionId string, numPages int) string {
 	fmt.Println(destPath)
 	fmt.Println(collectionId)
 
-	downloader := downloader.NewDownloader(baseApi, access, destPath, numPages)
-	downloader.Download(collectionId)
-	return "Completed"
+	downloader := downloader.NewDownloader(baseApi, access, numPages)
+	res := downloader.Download(collectionId, destPath)
+	return res
 }
