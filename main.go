@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"log"
+	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/wailsapp/wails/v2"
@@ -12,14 +14,29 @@ import (
 //go:embed frontend/dist
 var assets embed.FS
 
+type CtxKey int
+
+const (
+	AccessCtxKey CtxKey = iota
+	BaseApiKey
+	NumPagesKey
+)
+
 func main() {
-	// Create an instance of the app structure
-	app := NewApp()
 
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatal("error loading .env file")
 	}
+	access := os.Getenv("ACCESS")
+	if access == "" {
+		log.Fatal("please provide access key in .env")
+	}
+
+	app := NewApp()
+	app.ctx = context.WithValue(context.Background(), AccessCtxKey, access)
+	app.ctx = context.WithValue(app.ctx, BaseApiKey, "https://api.unsplash.com")
+	app.ctx = context.WithValue(app.ctx, NumPagesKey, 2)
 
 	// Create application with options
 	err = wails.Run(&options.App{
