@@ -8,12 +8,12 @@ interface Props {
 }
 
 export const Downloader: FC<Props> = ({
-  collectionIdInit = "",
+  collectionIdInit,
   messageInit = "Please configure the downloads below",
 }) => {
   const [results, setResults] = useState<string[]>([]);
   const [destPath, setDestPath] = useState("");
-  const [collectionId, setCollectionId] = useState(collectionIdInit);
+  const [collectionId, setCollectionId] = useState(collectionIdInit || "");
   const [numPages, setNumPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -26,6 +26,8 @@ export const Downloader: FC<Props> = ({
     setCollectionId("");
     setNumPages(1);
   };
+
+  const fromCollections = !!collectionIdInit;
 
   const validate = (): boolean => {
     if (destPath === "") {
@@ -63,7 +65,7 @@ export const Downloader: FC<Props> = ({
         <label htmlFor="collectionId">Provide collection id</label>
         <input
           value={collectionId}
-          disabled={!!collectionIdInit}
+          disabled={fromCollections}
           id="collectionId"
           onChange={updateCollection}
           name="input"
@@ -89,7 +91,9 @@ export const Downloader: FC<Props> = ({
         />
       </div>
       <div className="controls">
-        <button onClick={clearAll}>Clear form</button>
+        <button disabled={fromCollections} onClick={clearAll}>
+          Clear form
+        </button>
         <input className="inputfile" type="file" name="file" id="file" />
         <label htmlFor="file">Explore local files</label>
         {loading ? "Loading..." : <button onClick={download}>Download</button>}

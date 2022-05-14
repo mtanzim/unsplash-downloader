@@ -3,7 +3,7 @@ import "./Collection.css";
 import "../App.css";
 import { Downloader } from "./Downloader";
 
-const BASE_API = "https://api.unsplash.com/";
+const BASE_API = "https://api.unsplash.com";
 const PER_PAGE = 8;
 const CLIENT_ID = "xpySlyzhA8K9GRohyq4GWrCWzUxlo5ukMWE8NiFkvyc";
 
@@ -14,47 +14,70 @@ interface CleanedCollection {
 }
 
 export const Collections: FC = () => {
-  const [page, setPage] = useState(1);
+  const [curPage, setCurPage] = useState(1);
+  const [userPageNum, setUserNum] = useState(1);
+  const [curUserName, setCurUserName] = useState<string | null>(null);
+  const updateUserName = (e: any) => setCurUserName(e.target.value);
+
   const [curCollection, setCurCollection] = useState<null | CleanedCollection>(
     null
   );
+  const [collections, setCollections] = useState<CleanedCollection[]>([]);
+  const [errorMsg, setError] = useState(null);
 
   const goNext = () => {
-    setPage((cur) => cur + 1);
+    setCurPage((cur) => cur + 1);
   };
 
   const goPrev = () => {
-    setPage((cur) => Math.max(cur - 1, 1));
+    setCurPage((cur) => Math.max(cur - 1, 1));
+  };
+  const fetchCollections = async (page: number) => {
+    return fetch(
+      `${BASE_API}/collections?page=${page}&per_page=${PER_PAGE}&client_id=${CLIENT_ID}`
+    ).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      throw new Error("Failed to fetch collections");
+    });
   };
 
-  const [collections, setCollections] = useState<CleanedCollection[]>([]);
-  const [errorMsg, setError] = useState(null);
+  const fetchCollectionsByUser = async (username: string, curPage: number) => {
+    return fetch(
+      `${BASE_API}/users/${username}/collections?page=${curPage}&per_page=${PER_PAGE}&client_id=${CLIENT_ID}`
+    ).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      throw new Error("Failed to fetch collections for user");
+    });
+  };
+
+  const fetchForUser = (username: string) => {
+    fetchCollectionsByUser(username, userPageNum).then((res) =>
+      setCollections(res.map(collectionMapper))
+    );
+  };
+
+  const collectionMapper = (r: unknown) => ({
+    id: r?.id,
+    title: r?.title,
+    thumbnail: r?.cover_photo?.urls?.thumb,
+  });
+
   useEffect(() => {
     setError(null);
     setCollections([]);
-    fetch(
-      `${BASE_API}collections?page=${page}&per_page=${PER_PAGE}&client_id=${CLIENT_ID}`
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Failed to fetch collections");
-      })
+    fetchCollections(curPage)
       .then((res) => {
         console.log(res);
-        setCollections(
-          res.map((r: unknown) => ({
-            id: r?.id,
-            title: r?.title,
-            thumbnail: r?.cover_photo?.urls?.thumb,
-          }))
-        );
+        setCollections(res.map(collectionMapper));
       })
       .catch((err) => {
         setError(err.message || "Something went wrong");
       });
-  }, [page]);
+  }, [curPage]);
 
   const renderDownloader = () => {
     if (curCollection) {
@@ -70,10 +93,24 @@ export const Collections: FC = () => {
   return (
     <div className="page-container">
       <p>Browse collections</p>
+      <input
+        value={curUserName || ""}
+        id="userId"
+        onChange={updateUserName}
+        placeholder="Enter user name"
+        name="input"
+        type="text"
+      />
+      <button
+        disabled={!curUserName}
+        onClick={() => fetchForUser(curUserName || "")}
+      >
+        Search collections for user
+      </button>
       {!curCollection ? (
         <>
-          <p>Page {page}</p>
-          <button disabled={page === 1} onClick={goPrev}>
+          <p>Page {curPage}</p>
+          <button disabled={curPage === 1} onClick={goPrev}>
             Prev
           </button>
           <button disabled={collections.length === 0} onClick={goNext}>
