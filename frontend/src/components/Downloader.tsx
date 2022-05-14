@@ -94,14 +94,16 @@ export const Downloader: FC<Props> = ({
         <button disabled={fromCollections} onClick={clearAll}>
           Clear form
         </button>
-        <input className="inputfile" type="file" name="file" id="file" />
-        <label htmlFor="file">Explore local files</label>
+
         {loading ? "Loading..." : <button onClick={download}>Download</button>}
         {results.length > 0 && (
           <button onClick={() => setResults([])}>Clear results</button>
         )}
       </div>
+      <input className="inputfile" type="file" name="file" id="file" />
+      <label htmlFor="file">Explore local files</label>
       {error && <p className="error">{error}</p>}
+
       {results.length > 0 && (
         <textarea className="results" readOnly>
           {results.join("\n\n")}
