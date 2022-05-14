@@ -1,9 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import "./Collection.css";
 import "../App.css";
+import { Downloader } from "./Downloader";
 
 const BASE_API = "https://api.unsplash.com/";
-const PER_PAGE = 10;
+const PER_PAGE = 8;
 const CLIENT_ID = "xpySlyzhA8K9GRohyq4GWrCWzUxlo5ukMWE8NiFkvyc";
 
 interface CleanedCollection {
@@ -14,6 +15,9 @@ interface CleanedCollection {
 
 export const Collections: FC = () => {
   const [page, setPage] = useState(1);
+  const [curCollection, setCurCollection] = useState<null | CleanedCollection>(
+    null
+  );
 
   const goNext = () => {
     setPage((cur) => cur + 1);
@@ -51,26 +55,50 @@ export const Collections: FC = () => {
         setError(err.message || "Something went wrong");
       });
   }, [page]);
+
+  const renderDownloader = () => {
+    if (curCollection) {
+      return (
+        <Downloader
+          collectionIdInit={curCollection.id}
+          messageInit={`Configure download for ${curCollection.title}`}
+        />
+      );
+    }
+  };
+
   return (
     <div className="page-container">
-      <p>Collections</p>
-      <p>Page {page}</p>
-      <button disabled={page === 1} onClick={goPrev}>
-        Prev
-      </button>
-      <button disabled={collections.length === 0} onClick={goNext}>
-        Next
-      </button>
-      {errorMsg && <p className="error">{errorMsg}</p>}
-      <div className="collection-container">
-        {collections.map((c: CleanedCollection) => (
-          <div key={c.id} className="collection-item">
-            <p>{c.title}</p>
-            <img src={c.thumbnail} alt={c.title} />
+      <p>Browse collections</p>
+      {!curCollection ? (
+        <>
+          <p>Page {page}</p>
+          <button disabled={page === 1} onClick={goPrev}>
+            Prev
+          </button>
+          <button disabled={collections.length === 0} onClick={goNext}>
+            Next
+          </button>
+          {errorMsg && <p className="error">{errorMsg}</p>}
+          <div className="collection-container">
+            {collections.map((c: CleanedCollection) => (
+              <div key={c.id} className="collection-item">
+                <p>{c.title}</p>
+                <img
+                  onClick={() => setCurCollection(c)}
+                  src={c.thumbnail}
+                  alt={c.title}
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-
+        </>
+      ) : (
+        <>
+          <button onClick={() => setCurCollection(null)}>Go Back</button>
+          {renderDownloader()}
+        </>
+      )}
     </div>
   );
 };

@@ -2,10 +2,18 @@ import { FC, useState } from "react";
 import "../App.css";
 import { Download } from "../../wailsjs/go/main/App";
 
-export const Downloader: FC = () => {
+interface Props {
+  collectionIdInit?: string;
+  messageInit?: string;
+}
+
+export const Downloader: FC<Props> = ({
+  collectionIdInit = "",
+  messageInit = "Please configure the downloads below",
+}) => {
   const [results, setResults] = useState<string[]>([]);
   const [destPath, setDestPath] = useState("");
-  const [collectionId, setCollectionId] = useState("");
+  const [collectionId, setCollectionId] = useState(collectionIdInit);
   const [numPages, setNumPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -50,12 +58,12 @@ export const Downloader: FC = () => {
 
   return (
     <div>
-      <h1>Unsplash Wallpaper Downloader</h1>
-      <p>Please configure the downloads below</p>
+      <p>{messageInit}</p>
       <div id="input">
         <label htmlFor="collectionId">Provide collection id</label>
         <input
           value={collectionId}
+          disabled={!!collectionIdInit}
           id="collectionId"
           onChange={updateCollection}
           name="input"

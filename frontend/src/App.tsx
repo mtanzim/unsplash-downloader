@@ -20,6 +20,7 @@ function App() {
   };
   return (
     <div id="App">
+      <h1>Unsplash Wallpaper Downloader</h1>
       <button onClick={() => setPage("Collections")}>Collections</button>
       <button onClick={() => setPage("Downloader")}>Downloader</button>
       {renderPage()}
