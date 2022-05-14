@@ -37,7 +37,7 @@ func (a *App) Download(destPath, collectionId string, numPages int) []string {
 	fmt.Println(destPath)
 	fmt.Println(collectionId)
 
-	downloader := downloader.NewDownloader(baseApi, access, numPages)
-	res := downloader.Download(collectionId, destPath)
+	downloader := downloader.NewDownloader(baseApi, access)
+	res := downloader.Download(collectionId, destPath, numPages)
 	return res
 }
