@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import "./Collection.css";
 
 const BASE_API = "https://api.unsplash.com/";
 const PER_PAGE = 10;
@@ -42,15 +43,17 @@ export const Collections: FC = () => {
       });
   }, [page]);
   return (
-    <div>
+    <div className="page-container">
       <p>Collections</p>
       {errorMsg && <p>{errorMsg}</p>}
+      <div className="collection-container">
       {collections.map((c: CleanedCollection) => (
-        <div key={c.id}>
-          <h4>{c.title}</h4>
+        <div key={c.id}  className="collection-item">
           <img src={c.thumbnail} alt={c.title} />
+          <p>{c.title}</p>
         </div>
       ))}
+      </div>
     </div>
   );
 };
