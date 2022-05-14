@@ -3,7 +3,13 @@ import "../App.css";
 import "./Collection.css";
 import { CollectionGrid } from "./CollectionGrid";
 import { Downloader } from "./Downloader";
-import { BASE_API, CleanedCollection, CLIENT_ID, collectionMapper, PER_PAGE } from "./utils";
+import {
+  BASE_API,
+  CleanedCollection,
+  CLIENT_ID,
+  collectionMapper,
+  PER_PAGE
+} from "./utils";
 
 export const UserCollections: FC = () => {
   const [curPage, setCurPage] = useState(1);
@@ -40,8 +46,6 @@ export const UserCollections: FC = () => {
       setCollections(res.map(collectionMapper))
     );
   };
-
-
 
   useEffect(() => {
     if (curUserName) {

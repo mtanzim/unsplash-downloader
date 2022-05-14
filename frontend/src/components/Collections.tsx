@@ -3,11 +3,10 @@ import "../App.css";
 import "./Collection.css";
 import { CollectionGrid } from "./CollectionGrid";
 import { Downloader } from "./Downloader";
-import { BASE_API, CleanedCollection, CLIENT_ID, PER_PAGE } from "./utils";
+import { BASE_API, CleanedCollection, CLIENT_ID, collectionMapper, PER_PAGE } from "./utils";
 
 export const Collections: FC = () => {
   const [curPage, setCurPage] = useState(1);
-
   const [curCollection, setCurCollection] = useState<null | CleanedCollection>(
     null
   );
@@ -32,11 +31,6 @@ export const Collections: FC = () => {
     });
   };
 
-  const collectionMapper = (r: unknown) => ({
-    id: r?.id,
-    title: r?.title,
-    thumbnail: r?.cover_photo?.urls?.thumb,
-  });
 
   useEffect(() => {
     setError(null);
@@ -63,7 +57,7 @@ export const Collections: FC = () => {
   };
 
   return (
-    <div className="page-container">
+    <div>
       <p>Browse collections</p>
       {!curCollection ? (
         <>
