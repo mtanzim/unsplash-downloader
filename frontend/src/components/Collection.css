@@ -1,13 +1,4 @@
-.page-container {
-  display: flex;
-  flex: auto;
-}
-
 .collection-container {
-  margin: auto;
-  display: flex;
-}
-
-.collection-item {
-  /* width: 80px; */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }

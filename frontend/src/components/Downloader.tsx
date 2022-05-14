@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 import "../App.css";
 import { Download } from "../../wailsjs/go/main/App";
 
-
 export const Downloader: FC = () => {
   const [results, setResults] = useState<string[]>([]);
   const [destPath, setDestPath] = useState("");
@@ -50,7 +49,7 @@ export const Downloader: FC = () => {
   }
 
   return (
-    <div id="App" className="container-fluid">
+    <div>
       <h1>Unsplash Wallpaper Downloader</h1>
       <p>Please configure the downloads below</p>
       <div id="input">
@@ -98,5 +97,4 @@ export const Downloader: FC = () => {
       )}
     </div>
   );
-}
-
+};

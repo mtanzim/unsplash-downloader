@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./App.css";
-import { Download } from "../wailsjs/go/main/App";
 import { Collections } from "./components/Collections";
 import { Downloader } from "./components/Downloader";
 
@@ -20,11 +19,11 @@ function App() {
     }
   };
   return (
-    <>
+    <div id="App">
       <button onClick={() => setPage("Collections")}>Collections</button>
       <button onClick={() => setPage("Downloader")}>Downloader</button>
       {renderPage()}
-    </>
+    </div>
   );
 }
 
