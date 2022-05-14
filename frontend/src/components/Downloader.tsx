@@ -60,55 +60,68 @@ export const Downloader: FC<Props> = ({
 
   return (
     <div>
-      <p>{messageInit}</p>
-      <div id="input">
-        <label htmlFor="collectionId">Provide collection id</label>
-        <input
-          value={collectionId}
-          disabled={fromCollections}
-          id="collectionId"
-          onChange={updateCollection}
-          name="input"
-          type="text"
-        />
-        <label htmlFor="numPages">Number of pages</label>
-        <input
-          id="numPages"
-          onChange={updateNumPages}
-          value={numPages}
-          name="input"
-          type="number"
-          min="1"
-          max="20"
-        />
-        <label htmlFor="destPath">Download to path</label>
-        <input
-          id="destPath"
-          onChange={updateDest}
-          value={destPath}
-          name="input"
-          type="text"
-        />
-      </div>
-      <div className="controls">
-        <button disabled={fromCollections} onClick={clearAll}>
-          Clear form
-        </button>
+      <div>
+        <p>{messageInit}</p>
+        <div id="input">
+          <input
+            value={collectionId}
+            disabled={fromCollections}
+            id="collectionId"
+            onChange={updateCollection}
+            name="input"
+            type="text"
+          />
+          <label htmlFor="collectionId">Provide collection id</label>
+          <input
+            id="numPages"
+            onChange={updateNumPages}
+            value={numPages}
+            name="input"
+            type="number"
+            min="1"
+            max="20"
+          />
+          <label htmlFor="numPages">
+            Number of pages, each page contains 10 images
+          </label>
+          <input
+            id="destPath"
+            onChange={updateDest}
+            value={destPath}
+            name="input"
+            type="text"
+          />
+          <label htmlFor="destPath">Download to path</label>
+        </div>
+        <div className="controls">
+          <button disabled={fromCollections} onClick={clearAll}>
+            Clear form
+          </button>
 
-        {loading ? "Loading..." : <button onClick={download}>Download</button>}
+          {loading ? (
+            "Loading..."
+          ) : (
+            <button onClick={download}>Download</button>
+          )}
+          {results.length > 0 && (
+            <button onClick={() => setResults([])}>Clear results</button>
+          )}
+        </div>
+        <input className="inputfile" type="file" name="file" id="file" />
+        <label htmlFor="file">
+          <button>Explore local files</button>
+        </label>
+        {error && <p className="error">{error}</p>}
+      </div>
+      <div>
         {results.length > 0 && (
-          <button onClick={() => setResults([])}>Clear results</button>
+          <textarea className="results" readOnly>
+            {[`Downloaded ${results.length} files\n`]
+              .concat(results)
+              .join("\n\n")}
+          </textarea>
         )}
       </div>
-      <input className="inputfile" type="file" name="file" id="file" />
-      <label htmlFor="file">Explore local files</label>
-      {error && <p className="error">{error}</p>}
-
-      {results.length > 0 && (
-        <textarea className="results" readOnly>
-          {results.join("\n\n")}
-        </textarea>
-      )}
     </div>
   );
 };

@@ -65,7 +65,7 @@ export const UserCollections: FC = () => {
       return (
         <Downloader
           collectionIdInit={curCollection.id}
-          messageInit={`Configure download for collection ${curCollection.title} from ${curUserName}`}
+          messageInit={`Configure download for collection ${curCollection.title} from ${curUserName} with ${curCollection.numPhotos} pictures`}
         />
       );
     }
@@ -73,8 +73,7 @@ export const UserCollections: FC = () => {
 
   return (
     <div className="page-container">
-      <p>Browse users collections</p>
-
+      <h2>Browse user collections</h2>
       {!curCollection ? (
         <>
           <input

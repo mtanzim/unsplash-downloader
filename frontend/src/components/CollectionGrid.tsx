@@ -12,7 +12,8 @@ export const CollectionGrid: FC<Props> = ({ collections, cb }) => {
     <div className="collection-container">
       {collections.map((c: CleanedCollection) => (
         <div key={c.id} className="collection-item">
-          <p>{c.title}</p>
+          <h4>{c.title}</h4>
+          <p>{c.numPhotos} pictures</p>
           <img onClick={() => cb(c)} src={c.thumbnail} alt={c.title} />
         </div>
       ))}

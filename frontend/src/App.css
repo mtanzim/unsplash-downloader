@@ -18,6 +18,10 @@
   width: 200px;
 }
 
+#input label {
+  margin-bottom: 20px;
+}
+
 .inputfile {
   /* visibility: hidden etc. wont work */
   width: 0.1px;

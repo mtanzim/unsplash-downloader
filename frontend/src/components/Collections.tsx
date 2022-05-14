@@ -3,7 +3,13 @@ import "../App.css";
 import "./Collection.css";
 import { CollectionGrid } from "./CollectionGrid";
 import { Downloader } from "./Downloader";
-import { BASE_API, CleanedCollection, CLIENT_ID, collectionMapper, PER_PAGE } from "./utils";
+import {
+  BASE_API,
+  CleanedCollection,
+  CLIENT_ID,
+  collectionMapper,
+  PER_PAGE,
+} from "./utils";
 
 export const Collections: FC = () => {
   const [curPage, setCurPage] = useState(1);
@@ -31,7 +37,6 @@ export const Collections: FC = () => {
     });
   };
 
-
   useEffect(() => {
     setError(null);
     setCollections([]);
@@ -50,7 +55,7 @@ export const Collections: FC = () => {
       return (
         <Downloader
           collectionIdInit={curCollection.id}
-          messageInit={`Configure download for ${curCollection.title}`}
+          messageInit={`Configure download for ${curCollection.title}  with ${curCollection.numPhotos} pictures`}
         />
       );
     }
@@ -58,7 +63,7 @@ export const Collections: FC = () => {
 
   return (
     <div>
-      <p>Browse collections</p>
+      <h2>Browse collections</h2>
       {!curCollection ? (
         <>
           <p>Page {curPage}</p>

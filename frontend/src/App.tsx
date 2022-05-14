@@ -14,7 +14,12 @@ function App() {
       case "Collections":
         return <Collections />;
       case "Downloader":
-        return <Downloader />;
+        return (
+          <>
+            <h2>Downloader</h2>
+            <Downloader />
+          </>
+        );
       case "User Collections":
         return <UserCollections />;
       default:
@@ -25,7 +30,9 @@ function App() {
     <div id="App">
       <h1>Unsplash Wallpaper Downloader</h1>
       <button onClick={() => setPage("Collections")}>Collections</button>
-      <button onClick={() => setPage("User Collections")}>User Collections</button>
+      <button onClick={() => setPage("User Collections")}>
+        User Collections
+      </button>
       <button onClick={() => setPage("Downloader")}>Downloader</button>
       {renderPage()}
     </div>
