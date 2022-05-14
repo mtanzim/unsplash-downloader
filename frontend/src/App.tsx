@@ -29,11 +29,12 @@ function App() {
   return (
     <div id="App">
       <h1>Unsplash Wallpaper Downloader</h1>
-      <button onClick={() => setPage("Collections")}>Collections</button>
-      <button onClick={() => setPage("User Collections")}>
+      <div id="nav"></div>
+      <button className="nav" onClick={() => setPage("Collections")}>Collections</button>
+      <button className="nav" onClick={() => setPage("User Collections")}>
         User Collections
       </button>
-      <button onClick={() => setPage("Downloader")}>Downloader</button>
+      <button className="nav" onClick={() => setPage("Downloader")}>Downloader</button>
       {renderPage()}
     </div>
   );

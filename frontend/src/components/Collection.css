@@ -1,10 +1,21 @@
 .collection-container {
+  padding: 24px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
+
+.collection-item {
+  margin: 12px;
+  box-shadow: 10px -8px 0px rgb(253 230 138);
+}
+
 .collection-item img {
-  height: 250px;
-  width: 250px;
+  height: 150px;
+  width: 150px;
   object-fit: contain;
 }
+
+
+
+

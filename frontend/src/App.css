@@ -69,3 +69,8 @@
 .error {
   color: red;
 }
+
+button.nav {
+  background: rgb(253 230 138);
+  color: black;
+}
