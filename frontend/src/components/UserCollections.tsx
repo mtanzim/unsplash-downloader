@@ -3,10 +3,12 @@ import "../App.css";
 import "./Collection.css";
 import { CollectionGrid } from "./CollectionGrid";
 import { Downloader } from "./Downloader";
-import { BASE_API, CleanedCollection, CLIENT_ID, PER_PAGE } from "./utils";
+import { BASE_API, CleanedCollection, CLIENT_ID, collectionMapper, PER_PAGE } from "./utils";
 
-export const Collections: FC = () => {
+export const UserCollections: FC = () => {
   const [curPage, setCurPage] = useState(1);
+  const [curUserName, setCurUserName] = useState<string | null>(null);
+  const updateUserName = (e: any) => setCurUserName(e.target.value);
 
   const [curCollection, setCurCollection] = useState<null | CleanedCollection>(
     null
@@ -21,27 +23,33 @@ export const Collections: FC = () => {
   const goPrev = () => {
     setCurPage((cur) => Math.max(cur - 1, 1));
   };
-  const fetchCollections = async (page: number) => {
+
+  const fetchCollectionsByUser = async (username: string, curPage: number) => {
     return fetch(
-      `${BASE_API}/collections?page=${page}&per_page=${PER_PAGE}&client_id=${CLIENT_ID}`
+      `${BASE_API}/users/${username}/collections?page=${curPage}&per_page=${PER_PAGE}&client_id=${CLIENT_ID}`
     ).then((res) => {
       if (res.ok) {
         return res.json();
       }
-      throw new Error("Failed to fetch collections");
+      throw new Error("Failed to fetch collections for user");
     });
   };
 
-  const collectionMapper = (r: unknown) => ({
-    id: r?.id,
-    title: r?.title,
-    thumbnail: r?.cover_photo?.urls?.thumb,
-  });
+  const fetchForUser = (username: string) => {
+    fetchCollectionsByUser(username, curPage).then((res) =>
+      setCollections(res.map(collectionMapper))
+    );
+  };
+
+
 
   useEffect(() => {
+    if (curUserName) {
+      return;
+    }
     setError(null);
     setCollections([]);
-    fetchCollections(curPage)
+    fetchCollectionsByUser(curUserName || "", curPage)
       .then((res) => {
         console.log(res);
         setCollections(res.map(collectionMapper));
@@ -64,7 +72,21 @@ export const Collections: FC = () => {
 
   return (
     <div className="page-container">
-      <p>Browse collections</p>
+      <p>Browse users collections</p>
+      <input
+        value={curUserName || ""}
+        id="userId"
+        onChange={updateUserName}
+        placeholder="Enter user name"
+        name="input"
+        type="text"
+      />
+      <button
+        disabled={!curUserName}
+        onClick={() => fetchForUser(curUserName || "")}
+      >
+        Search collections for user
+      </button>
       {!curCollection ? (
         <>
           <p>Page {curPage}</p>
