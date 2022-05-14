@@ -2,8 +2,9 @@ import { useState } from "react";
 import "./App.css";
 import { Collections } from "./components/Collections";
 import { Downloader } from "./components/Downloader";
+import { UserCollections } from "./components/UserCollections";
 
-type Pages = "Downloader" | "Collections";
+type Pages = "Downloader" | "Collections" | "User Collections";
 
 function App() {
   const [page, setPage] = useState<Pages>("Collections");
@@ -14,6 +15,8 @@ function App() {
         return <Collections />;
       case "Downloader":
         return <Downloader />;
+      case "User Collections":
+        return <UserCollections />;
       default:
         return <div>Page not found</div>;
     }
@@ -22,6 +25,7 @@ function App() {
     <div id="App">
       <h1>Unsplash Wallpaper Downloader</h1>
       <button onClick={() => setPage("Collections")}>Collections</button>
+      <button onClick={() => setPage("User Collections")}>User Collections</button>
       <button onClick={() => setPage("Downloader")}>Downloader</button>
       {renderPage()}
     </div>

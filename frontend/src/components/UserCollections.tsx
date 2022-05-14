@@ -8,7 +8,7 @@ import {
   CleanedCollection,
   CLIENT_ID,
   collectionMapper,
-  PER_PAGE
+  PER_PAGE,
 } from "./utils";
 
 export const UserCollections: FC = () => {
@@ -41,26 +41,23 @@ export const UserCollections: FC = () => {
     });
   };
 
-  const fetchForUser = (username: string) => {
-    fetchCollectionsByUser(username, curPage).then((res) =>
-      setCollections(res.map(collectionMapper))
-    );
+  const fetchForUser = (username: string, curPage: number) => {
+    setCollections([]);
+    setError(null);
+    fetchCollectionsByUser(username, curPage)
+      .then((res) => setCollections(res.map(collectionMapper)))
+      .catch((err) => {
+        setError(err.message || "Something went wrong");
+      });
   };
 
   useEffect(() => {
-    if (curUserName) {
+    if (!curUserName) {
       return;
     }
     setError(null);
     setCollections([]);
-    fetchCollectionsByUser(curUserName || "", curPage)
-      .then((res) => {
-        console.log(res);
-        setCollections(res.map(collectionMapper));
-      })
-      .catch((err) => {
-        setError(err.message || "Something went wrong");
-      });
+    fetchForUser(curUserName || "", curPage);
   }, [curPage]);
 
   const renderDownloader = () => {
@@ -68,7 +65,7 @@ export const UserCollections: FC = () => {
       return (
         <Downloader
           collectionIdInit={curCollection.id}
-          messageInit={`Configure download for ${curCollection.title}`}
+          messageInit={`Configure download for collection ${curCollection.title} from ${curUserName}`}
         />
       );
     }
@@ -77,22 +74,23 @@ export const UserCollections: FC = () => {
   return (
     <div className="page-container">
       <p>Browse users collections</p>
-      <input
-        value={curUserName || ""}
-        id="userId"
-        onChange={updateUserName}
-        placeholder="Enter user name"
-        name="input"
-        type="text"
-      />
-      <button
-        disabled={!curUserName}
-        onClick={() => fetchForUser(curUserName || "")}
-      >
-        Search collections for user
-      </button>
+
       {!curCollection ? (
         <>
+          <input
+            value={curUserName || ""}
+            id="userId"
+            onChange={updateUserName}
+            placeholder="Enter user name"
+            name="input"
+            type="text"
+          />
+          <button
+            disabled={!curUserName}
+            onClick={() => fetchForUser(curUserName || "", curPage)}
+          >
+            Search collections for user
+          </button>
           <p>Page {curPage}</p>
           <button disabled={curPage === 1} onClick={goPrev}>
             Prev
