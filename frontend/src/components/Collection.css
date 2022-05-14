@@ -16,6 +16,11 @@
   object-fit: contain;
 }
 
+.search {
+  width: 33%;
+  margin: auto;
+}
+
 
 
 

@@ -2,11 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px gray solid;
-  /* margin: 16px; */
   padding: 16px;
   width: 33%;
   margin: auto;
+  box-shadow: 10px -8px 0px rgb(253 230 138);
+
 }
 
 
@@ -47,7 +47,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  border: 1px gray solid;
+  box-shadow: 10px -8px 0px rgb(253 230 138);
   margin: 16px;
   padding: 16px;
   width: 33%;
@@ -64,6 +64,7 @@
   height: 200px;
   overflow-y: auto;
   resize: none;
+  box-shadow: 10px -8px 0px rgb(253 230 138);
 }
 
 .error {

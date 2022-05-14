@@ -76,20 +76,22 @@ export const UserCollections: FC = () => {
       <h2>Browse user collections</h2>
       {!curCollection ? (
         <>
-          <input
-            value={curUserName || ""}
-            id="userId"
-            onChange={updateUserName}
-            placeholder="Enter user name"
-            name="input"
-            type="text"
-          />
-          <button
-            disabled={!curUserName}
-            onClick={() => fetchForUser(curUserName || "", curPage)}
-          >
-            Search collections for user
-          </button>
+          <div className="search">
+            <input
+              value={curUserName || ""}
+              id="userId"
+              onChange={updateUserName}
+              placeholder="Enter user name"
+              name="input"
+              type="text"
+            />
+            <button
+              disabled={!curUserName}
+              onClick={() => fetchForUser(curUserName || "", curPage)}
+            >
+              Search collections for user
+            </button>
+          </div>
           <p>Page {curPage}</p>
           <button disabled={curPage === 1} onClick={goPrev}>
             Prev
