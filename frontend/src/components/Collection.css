@@ -2,3 +2,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+
+.collection-item img {
+  height: 250px;
+  width: 250px;
+  object-fit: contain;
+}

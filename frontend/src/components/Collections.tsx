@@ -14,6 +14,15 @@ interface CleanedCollection {
 
 export const Collections: FC = () => {
   const [page, setPage] = useState(1);
+
+  const goNext = () => {
+    setPage((cur) => cur + 1);
+  };
+
+  const goPrev = () => {
+    setPage((cur) => Math.max(cur - 1, 1));
+  };
+
   const [collections, setCollections] = useState<CleanedCollection[]>([]);
   const [errorMsg, setError] = useState(null);
   useEffect(() => {
@@ -30,7 +39,6 @@ export const Collections: FC = () => {
       })
       .then((res) => {
         console.log(res);
-        // setCollections(res);
         setCollections(
           res.map((r: unknown) => ({
             id: r?.id,
@@ -46,15 +54,23 @@ export const Collections: FC = () => {
   return (
     <div className="page-container">
       <p>Collections</p>
+      <p>Page {page}</p>
+      <button disabled={page === 1} onClick={goPrev}>
+        Prev
+      </button>
+      <button disabled={collections.length === 0} onClick={goNext}>
+        Next
+      </button>
       {errorMsg && <p className="error">{errorMsg}</p>}
       <div className="collection-container">
-      {collections.map((c: CleanedCollection) => (
-        <div key={c.id}  className="collection-item">
-          <p>{c.title}</p>
-          <img src={c.thumbnail} alt={c.title} />
-        </div>
-      ))}
+        {collections.map((c: CleanedCollection) => (
+          <div key={c.id} className="collection-item">
+            <p>{c.title}</p>
+            <img src={c.thumbnail} alt={c.title} />
+          </div>
+        ))}
       </div>
+
     </div>
   );
 };
